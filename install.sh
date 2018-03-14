@@ -10,7 +10,7 @@ rm *.tar.gz
 cd /home/volumio/pydPiper
 sh ./install.sh
 
-wget -O /etc/systemd/system/pydpiper.service https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/unit/pydpiper_minimized.service
+wget -O /etc/systemd/system/pydpiper.service https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/unit/pydpiper.service
 systemctl daemon-reload
 
 # timedatectl list-timezones
