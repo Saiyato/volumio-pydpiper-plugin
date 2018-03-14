@@ -44,7 +44,7 @@ Restart=always
 # <pagefile> -- The name of the pages file to use for your display
 
 # RaspdacV3 without weather
-ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw   -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --i2caddress 0x27 --timezone 'Europe/Amsterdam' --temperature celsius --wapi 92c516e7709d5e30 --wlocale 'Netherlands/Woudenberg' --pages pages_weh_80x16_volumio.py
+ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver hd44780_i2c --width 80 --height 16 --i2caddress 0x3f --timezone 'Europe/Amsterdam' --temperature celsius --wapi 92c516e7709d5e30 --wlocale 'Netherlands/Woudenberg' --pages pages_lcd_16x2.py
 
 ExecStop=/usr/bin/docker stop -t 2 dhrone/pydpiper:latest
 

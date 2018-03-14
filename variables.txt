@@ -12,6 +12,7 @@ mountingpoint
 --d6
 --d7
 --i2caddress (0x27)
+--i2cport (1)
 --timezone (timedatectl list-timezones)
 --temperature (celsius/fahrenheit)
 --wapi (api key)
