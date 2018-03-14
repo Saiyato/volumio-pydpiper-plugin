@@ -17,3 +17,6 @@ mountingpoint
 --wapi (api key)
 --wlocale (location)
 --pages (volumio)
+
+# Fetch I2C devices
+i2cdetect -y 1
