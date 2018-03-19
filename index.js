@@ -10,10 +10,10 @@ var libQ = require('kew');
 var net = require('net');
 var currentIp = '';
 
-// Define the ControllerLMS class
-module.exports = ControllerLMS;
+// Define the ControllerPydPiper class
+module.exports = ControllerPydPiper;
 
-function ControllerLMS(context) 
+function ControllerPydPiper(context) 
 {
 	var self = this;
 
@@ -24,10 +24,10 @@ function ControllerLMS(context)
 
 };
 
-ControllerLMS.prototype.onVolumioStart = function()
+ControllerPydPiper.prototype.onVolumioStart = function()
 {
 	var self = this;
-	self.logger.info("LMS initiated");
+	self.logger.info("PydPiper initiated");
 	
 	this.configFile = this.commandRouter.pluginManager.getConfigurationFile(this.context, 'config.json');
 	self.getConf(this.configFile);
@@ -35,17 +35,17 @@ ControllerLMS.prototype.onVolumioStart = function()
 	return libQ.resolve();	
 };
 
-ControllerLMS.prototype.getConfigurationFiles = function()
+ControllerPydPiper.prototype.getConfigurationFiles = function()
 {
 	return ['config.json'];
 };
 
 // Plugin methods -----------------------------------------------------------------------------
-ControllerLMS.prototype.onStop = function() {
+ControllerPydPiper.prototype.onStop = function() {
 	var self = this;
 	var defer = libQ.defer();
 
-	self.stopService('logitechmediaserver')
+	self.stopService('pydpiper')
 	.then(function(edefer)
 	{
 		defer.resolve();
@@ -59,11 +59,11 @@ ControllerLMS.prototype.onStop = function() {
 	return defer.promise;
 };
 
-ControllerLMS.prototype.stop = function() {
+ControllerPydPiper.prototype.stop = function() {
 	var self = this;
 	var defer = libQ.defer();
 
-	self.stopService('logitechmediaserver')
+	self.stopService('pydpiper')
 	.then(function(edefer)
 	{
 		defer.resolve();
@@ -77,11 +77,11 @@ ControllerLMS.prototype.stop = function() {
 	return defer.promise;
 };
 
-ControllerLMS.prototype.onStart = function() {
+ControllerPydPiper.prototype.onStart = function() {
 	var self = this;
 	var defer = libQ.defer();
 
-	self.restartService('logitechmediaserver', true)
+	self.restartService('pydpiper', true)
 	.then(function(edefer)
 	{
 		defer.resolve();
@@ -96,7 +96,7 @@ ControllerLMS.prototype.onStart = function() {
 	return defer.promise;
 };
 
-ControllerLMS.prototype.onRestart = function() 
+ControllerPydPiper.prototype.onRestart = function() 
 {
 	// Do nothing
 	self.logger.info("performing onRestart action");
@@ -104,19 +104,19 @@ ControllerLMS.prototype.onRestart = function()
 	var self = this;
 };
 
-ControllerLMS.prototype.onInstall = function() 
+ControllerPydPiper.prototype.onInstall = function() 
 {
 	self.logger.info("performing onInstall action");
 	
 	var self = this;
 };
 
-ControllerLMS.prototype.onUninstall = function() 
+ControllerPydPiper.prototype.onUninstall = function() 
 {
 	// Perform uninstall tasks here!
 };
 
-ControllerLMS.prototype.getUIConfig = function() {
+ControllerPydPiper.prototype.getUIConfig = function() {
     var self = this;
 	var defer = libQ.defer();    
     var lang_code = this.commandRouter.sharedVars.get('language_code');
@@ -151,7 +151,7 @@ ControllerLMS.prototype.getUIConfig = function() {
 	return defer.promise;
 };
 
-ControllerLMS.prototype.setUIConfig = function(data) {
+ControllerPydPiper.prototype.setUIConfig = function(data) {
 	var self = this;
 	
 	self.logger.info("Updating UI config");
@@ -160,7 +160,7 @@ ControllerLMS.prototype.setUIConfig = function(data) {
 	return libQ.resolve();
 };
 
-ControllerLMS.prototype.getConf = function(configFile) {
+ControllerPydPiper.prototype.getConf = function(configFile) {
 	var self = this;
 	this.config = new (require('v-conf'))()
 	this.config.loadFile(configFile)
@@ -168,52 +168,74 @@ ControllerLMS.prototype.getConf = function(configFile) {
 	return libQ.resolve();
 };
 
-ControllerLMS.prototype.setConf = function(conf) {
+ControllerPydPiper.prototype.setConf = function(conf) {
 	var self = this;
 	return libQ.resolve();
 };
 
 // Public Methods ---------------------------------------------------------------------------------------
 
-ControllerLMS.prototype.updateLMSConfiguration = function (data)
+ControllerPydPiper.prototype.updateConnectionSettings = function (data)
 {
 	var self = this;
 	var defer = libQ.defer();
 	
-	self.config.set('enabled', data['enabled']);
-	self.logger.info("Successfully updated LMS configuration");
+	self.config.set('parallel', data['parallel']);
+	self.config.set('driver', data['driver']);
+	self.config.set('width', data['width']);
+	self.config.set('height', data['height']);
+	self.config.set('rs', data['rs']);
+	self.config.set('e', data['e']);
+	self.config.set('d4', data['d4']);
+	self.config.set('d5', data['d5']);
+	self.config.set('d6', data['d6']);
+	self.config.set('d7', data['d7']);
+	self.config.set('i2caddress', data['i2caddress']);
+	self.config.set('i2cport', data['i2cport']);
+	self.logger.info("Successfully updated connection settings");
 
-	if(data['enabled'] == true)
+	self.restartService("pydpiper", false)
+	.then(function(edefer)
 	{
-		self.restartService("logitechmediaserver", false)
-		.then(function(edefer)
-		{
-			defer.resolve();
-		})
-		.fail(function()
-		{
-			self.commandRouter.pushToastMessage('error', "Restart failed", "Restarting logitechmediaserver failed with error: " + error);
-			defer.reject(new Error());
-		});
-	}
-	else
+		defer.resolve();
+	})
+	.fail(function()
 	{
-		self.stopService("logitechmediaserver")
-		.then(function(edefer)
-		{
-			defer.resolve();
-		})
-		.fail(function()
-		{
-			self.commandRouter.pushToastMessage('error', "Stopping failed", "Stopping logitechmediaserver failed with error: " + error);
-			defer.reject(new Error());
-		});
-	}
+		self.commandRouter.pushToastMessage('error', "Restart failed", "Restarting pydpiper failed with error: " + error);
+		defer.reject(new Error());
+	});
 	
 	return defer.promise;
 };
 
-ControllerLMS.prototype.restartService = function (serviceName, boot)
+ControllerPydPiper.prototype.updateOutputSettings = function (data)
+{
+	var self = this;
+	var defer = libQ.defer();
+	
+	self.config.set('timezone', data['timezone']);
+	self.config.set('units', data['units']);
+	self.config.set('wapi', data['wapi']);
+	self.config.set('wlocale', data['wlocale']);
+	self.config.set('mount_point', data['mount_point']);
+	self.config.set('pages_file', data['pages_file']);
+	self.logger.info("Successfully updated connection settings");
+
+	self.restartService("pydpiper", false)
+	.then(function(edefer)
+	{
+		defer.resolve();
+	})
+	.fail(function()
+	{
+		self.commandRouter.pushToastMessage('error', "Restart failed", "Restarting pydpiper failed with error: " + error);
+		defer.reject(new Error());
+	});
+	
+	return defer.promise;
+};
+
+ControllerPydPiper.prototype.restartService = function (serviceName, boot)
 {
 	var self = this;
 	var defer=libQ.defer();
@@ -246,7 +268,7 @@ ControllerLMS.prototype.restartService = function (serviceName, boot)
 	return defer.promise;
 };
 
-ControllerLMS.prototype.stopService = function (serviceName)
+ControllerPydPiper.prototype.stopService = function (serviceName)
 {
 	var self = this;
 	var defer=libQ.defer();
@@ -269,7 +291,7 @@ ControllerLMS.prototype.stopService = function (serviceName)
 	return defer.promise;
 };
 
-ControllerLMS.prototype.replaceStringInFile = function (pattern, value, inFile)
+ControllerPydPiper.prototype.replaceStringInFile = function (pattern, value, inFile)
 {
 	var self = this;
 	var defer = libQ.defer();
@@ -292,7 +314,7 @@ ControllerLMS.prototype.replaceStringInFile = function (pattern, value, inFile)
 	return defer.promise;
 };
 
-ControllerLMS.prototype.getCurrentIP = function () {
+ControllerPydPiper.prototype.getCurrentIP = function () {
     var self = this;
     var defer = libQ.defer();
 	var ipaddr = '';
