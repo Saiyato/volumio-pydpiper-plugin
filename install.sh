@@ -18,8 +18,11 @@ if [ ! -f $INSTALLING ]; then
 	cd /home/volumio/pydPiper
 	sh ./install.sh
 
-	wget -O /home/volumio/pydPiper/pydPiper.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pydPiper.py
+	# Fetch custom scripts
+	wget -O /home/volumio/pydPiper/pages_lcd_16x2_volumio.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_lcd_16x2_volumio.py
 	wget -O /home/volumio/pydPiper/pages_weh_80x16_volumio.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_weh_80x16_volumio.py
+	wget -O /home/volumio/pydPiper/pydPiper.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pydPiper.py
+	
 	wget -O /etc/systemd/system/pydpiper.service https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/unit/pydpiper.service
 	systemctl daemon-reload
 
