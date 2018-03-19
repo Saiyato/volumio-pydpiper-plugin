@@ -27,15 +27,15 @@
     "type": "int",
     "value": 25
   },
-  "d6": {
+  "d5": {
     "type": "int",
     "value": 24
   },
-  "d7": {
+  "d6": {
     "type": "int",
     "value": 23
   },
-  "d8": {
+  "d7": {
     "type": "int",
     "value": 27
   },
@@ -54,6 +54,10 @@
   "units": {
     "type": "text",
     "value": "celsius"
+  },
+  "use_weather": {
+    "type": "boolean",
+    "value": false
   },
   "wapi": {
     "type": "text",

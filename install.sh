@@ -1,16 +1,31 @@
 #!/bin/bash
-# Fetch the latest release of pydPiper
-wget https://github.com/dhrone/pydPiper/archive/v0.3-alpha.tar.gz
-#wget $(curl -s https://api.github.com/repos/dhrone/pydPiper/releases/latest | grep 'tar' | cut -d\" -f4) -P /home/volumio/pydPiper
+## PydPiper installation script
+echo "Installing PydPiper and its dependencies..."
+INSTALLING="/home/volumio/pydpiper-plugin.installing"
 
-mkdir /home/volumio/pydPiper
-tar zxvf v0.3-alpha.tar.gz -C /home/volumio/pydPiper/ --strip-components=1
-rm *.tar.gz
+if [ ! -f $INSTALLING ]; then
 
-cd /home/volumio/pydPiper
-sh ./install.sh
+	touch $INSTALLING
+	
+	# Fetch the latest release of pydPiper
+	wget https://github.com/dhrone/pydPiper/archive/v0.3-alpha.tar.gz
+	#wget $(curl -s https://api.github.com/repos/dhrone/pydPiper/releases/latest | grep 'tar' | cut -d\" -f4) -P /home/volumio/pydPiper
 
-wget -O /etc/systemd/system/pydpiper.service https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/unit/pydpiper.service
-systemctl daemon-reload
+	mkdir /home/volumio/pydPiper
+	tar zxvf v0.3-alpha.tar.gz -C /home/volumio/pydPiper/ --strip-components=1
+	rm *.tar.gz
 
-# timedatectl list-timezones
+	cd /home/volumio/pydPiper
+	sh ./install.sh
+
+	wget -O /home/volumio/pydPiper/pages_weh_80x16_volumio.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_weh_80x16_volumio.py
+	wget -O /etc/systemd/system/pydpiper.service https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/unit/pydpiper.service
+	systemctl daemon-reload
+
+	rm $INSTALLING
+
+	#required to end the plugin install
+	echo "plugininstallend"
+else
+	echo "Plugin is already installing! Not continuing..."
+fi

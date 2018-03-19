@@ -22,3 +22,5 @@ mountingpoint
 
 # Fetch I2C devices
 i2cdetect -y 1
+
+# test runs

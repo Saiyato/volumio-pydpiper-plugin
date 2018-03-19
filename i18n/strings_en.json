@@ -1,8 +1,9 @@
 {
-	"PYDPIPER":{
+	"PYDPIPER":
+	{
 	"PYDPIPERCONF":"PydPiper Configuration",
 		"CONNECTIONSETTINGS":"Configure LCD connection settings",
-		"D_CONNECTIONSETTINGS":"The below settings will control how the PydPiper service will try to connect to your display module. At this moment the following displays and types of connections are supported: <BR />HD44780 (WEG and WEH) over both parallel and I2C connections. <BR />SSD1306 over I2C only.",
+		"D_CONNECTIONSETTINGS":"The below settings will control how the PydPiper service will try to connect to your display module. At this moment the following displays and types of connections are supported: HD44780 (standard, WEG and WEH) over both parallel and I2C connections, SSD1306 over I2C only.",
 			"PARALLEL":"Enable parallel connection (disables IIC (I2C))",		
 			"D_PARALLEL":"If set to ON parallel connection is used, else IIC (I2C) is used.",
 			"DRIVER":"Select driver",
@@ -14,18 +15,18 @@
 			"D_HEIGHT":"The height of the display in pixel lines, for standard issue line displays usually 8 lines per character field or row (1 = 8, 2 = 16, 4 = 32 etc.)",
 			"DD_HEIGHT":"Usually a multitude of 8",
 			"E":"Pin E(N) (enable)",
-			"DD_E":"Default = 8 <BR />RaspDac = 8",
+			"DD_E":"Default = 8 | RaspDac = 8",
 			"RS":"Pin RS (register select)",
-			"DD_RS":"Default = 7 <BR />RaspDac = 7",
+			"DD_RS":"Default = 7 | RaspDac = 7",
 			"D4":"Pin D4 (data bit 4)",
-			"DD_D4":"Default = 25 <BR />RaspDac = 25",
+			"DD_D4":"Default = 25 | RaspDac = 25",
 			"D5":"Pin D5 (data bit 5)",
-			"DD_D5":"Default = 24 <BR />RaspDac = 24",
+			"DD_D5":"Default = 24 | RaspDac = 24",
 			"D6":"Pin D6 (data bit 6)",
-			"DD_D6":"Default = 23 <BR />RaspDac = 23",
+			"DD_D6":"Default = 23 | RaspDac = 23",
 			"D7":"Pin D7 (data bit 7)",
-			"DD_D7":"Default = 18 <BR />RaspDac = 27",
-			"GPIO_PIN":"The GPIO pin to which this LCD pin connects on the Raspberry Pi. Standard config is: <BR />D7=18<BR />D6=23<BR />D5=24<BR />D4=25<BR />EN=8<BR />EN2=22<BR />RS=7<BR />BL=8"
+			"DD_D7":"Default = 18 | RaspDac = 27",
+			"GPIO_PIN":"The GPIO pin to which this LCD pin connects on the Raspberry Pi. Standard config is: <BR />D7=18<BR />D6=23<BR />D5=24<BR />D4=25<BR />EN=8<BR />EN2=22<BR />RS=7<BR />BL=8",
 			"I2CADDRESS":"IIC (I2C) address",
 			"D_I2CADDRESS":"You can query the used port by using the command 'sudo i2cdetect -y 1' (note: the last character is the number one)",
 			"DD_I2CADDRESS":"Default = 0x27",
@@ -47,7 +48,7 @@
 			"MOUNT_POINT":"Mount point",
 			"D_MOUNT_POINT":"Use docker for standard operation, if you're keen on modifying the pages, use the local variant and update the correct pages_file in /home/volumio/pydPiper",
 			"PAGES_FILE":"Pages file",
-			"D_PAGES_FILE":"Fill in the name of the pages file (within the pydPiper directory) you want to use. <BR />For standard HD44780 you can use: pages_lcd_{WIDTH IN COLUMNS}x{HEIGHT IN ROWS}.py (e.g. pages_lcd_16x2.py) <BR />For the Winstar OLED line display you can use: pages_weh_80x16.py (pages_weg_100x16.py for WEG type displays) <BR />For the SSD type displays you can use: pages_ssd1306.py",
+			"D_PAGES_FILE":"Fill in the name of the pages file (within the pydPiper directory) you want to use. <BR /><BR />For standard HD44780 you can use: pages_lcd_{WIDTH IN COLUMNS}x{HEIGHT IN ROWS}.py (e.g. pages_lcd_16x2.py) <BR /><BR />For the Winstar OLED line display you can use: pages_weh_80x16.py (pages_weg_100x16.py for WEG type displays) <BR /><BR />For the SSD type displays you can use: pages_ssd1306.py",
 	"SAVE": "Save"
 	}
 }

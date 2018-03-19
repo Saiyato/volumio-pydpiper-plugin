@@ -6,8 +6,10 @@ if [ ! -f $INSTALLING ]; then
 
 	touch $INSTALLING
 
-	# Uninstall LMS
-	dpkg -P squeezeboxserver
+	# Uninstall PydPiper and docker
+	apt-get remove --auto-remove docker
+	rm -rf /var/lib/docker
+	rm -rf /home/volumio/pydPiper
 
 	rm $INSTALLING
 

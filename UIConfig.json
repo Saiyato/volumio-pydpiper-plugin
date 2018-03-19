@@ -17,7 +17,7 @@
 			"saveButton": {
 				"label": "TRANSLATE.PYDPIPER.SAVE",
 				"data": [
-					"serial",
+					"parallel",
 					"driver",
 					"width",
 					"height",
@@ -44,11 +44,11 @@
 				"element": "select",				
 				"label": "TRANSLATE.PYDPIPER.DRIVER",
 				"doc": "TRANSLATE.PYDPIPER.D_DRIVER",
-				"value": {
-					"value": "hd44780",
-					"label": "Serial connection"
+				"value": {					
+					"label": "Winstar WEH/WEG parallel connection",
+					"value": "winstar_weg"
 				},
-				"options": [],
+				"options": []
 			},			
 			{
 				"id": "width",
@@ -77,7 +77,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_RS",
 				"value": 7,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -90,7 +90,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_E",
 				"value": 8,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -103,7 +103,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_D4",
 				"value": 25,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -116,7 +116,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_D5",
 				"value": 24,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -129,7 +129,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_D6",
 				"value": 23,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -142,7 +142,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_D7",
 				"value": 27,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": true
 				}
 			},
@@ -155,7 +155,7 @@
 				"description": "TRANSLATE.PYDPIPER.DD_I2CADDRESS",
 				"value": "0x27",
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": false
 				}
 			},
@@ -167,7 +167,7 @@
 				"doc": "TRANSLATE.PYDPIPER.D_I2CPORT",
 				"value": 1,
 				"visibleIf": {
-					"field": "serial",
+					"field": "parallel",
 					"value": false
 				}
 			}]			
@@ -205,7 +205,7 @@
 					"value": "Europe/Amsterdam",
 					"label": "Europe/Amsterdam"
 				},
-				"options": [],
+				"options": []
 			},
 			{
 				"id": "units",
@@ -216,16 +216,7 @@
 					"label": "Celsius",
 					"value": "celsius"					
 				},
-				"options": [
-					{
-						"label": "Celsius",
-						"value": "celsius"
-					},
-					{
-						"label": "Fahrenheit",
-						"value": "fahrenheit"
-					}
-				],
+				"options": []
 			},
 			{
 				"id": "use_weather",
@@ -267,16 +258,7 @@
 					"label": "Docker container",
 					"value": "docker"
 				},
-				"options": [
-					{
-						"label": "Docker container",
-						"value": "docker"
-					},
-					{
-						"label": "Local directory",
-						"value": "local"
-					}
-				],
+				"options": []
 			},
 			{
 				"id": "pages_file",

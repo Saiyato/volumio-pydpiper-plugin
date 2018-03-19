@@ -7,6 +7,7 @@ var ifconfig = require('wireless-tools/ifconfig');
 var ip = require('ip');
 var libNet = require('net');
 var libQ = require('kew');
+var moment = require('moment-timezone');
 var net = require('net');
 var currentIp = '';
 
@@ -122,8 +123,15 @@ ControllerPydPiper.prototype.getUIConfig = function() {
     var lang_code = this.commandRouter.sharedVars.get('language_code');
 
 	self.getConf(this.configFile);
-	self.getCurrentIP();
 	self.logger.info("Loaded the previous config.");
+	
+	// Populate drop down boxes	
+	var available_drivers = fs.readJsonSync((__dirname + '/options/drivers.json'),  'utf8', {throws: false});
+	var available_units = fs.readJsonSync((__dirname + '/options/units.json'),  'utf8', {throws: false});
+	var available_mounts = fs.readJsonSync((__dirname + '/options/mount_points.json'),  'utf8', {throws: false});
+	var zones = moment.tz.names();	
+	if(self.config.get('enable_debug_logging'))
+		self.logger.info("Zone count: " + zones.length);	
 	
 	self.commandRouter.i18nJson(__dirname+'/i18n/strings_' + lang_code + '.json',
 		__dirname + '/i18n/strings_en.json',
@@ -133,12 +141,74 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 		self.logger.info("## populating UI...");
 		var consoleUrl = 'http://' + currentIp + ':9000';
 		
-		uiconf.sections[0].content[0].onClick.url = consoleUrl;
-		uiconf.sections[1].content[0].value = self.config.get('enabled');
-		self.logger.info("2/2 LMS settings loaded");
+		uiconf.sections[0].content[0].value = self.config.get('parallel');
+		for (var n = 0; n < available_drivers.drivers.length; n++){
+			self.configManager.pushUIConfigParam(uiconf, 'sections[0].content[1].options', {
+				value: available_drivers.drivers[n].driver,
+				label: available_drivers.drivers[n].name
+			});
+			
+			if(available_drivers.drivers[n].driver == self.config.get('driver'))
+			{
+				uiconf.sections[0].content[1].value.value = available_drivers.drivers[n].driver;
+				uiconf.sections[0].content[1].value.label = available_drivers.drivers[n].name;
+			}
+		}
+		uiconf.sections[0].content[2].value = self.config.get('width');
+		uiconf.sections[0].content[3].value = self.config.get('height');
+		uiconf.sections[0].content[4].value = self.config.get('rs');
+		uiconf.sections[0].content[5].value = self.config.get('e');
+		uiconf.sections[0].content[6].value = self.config.get('d4');
+		uiconf.sections[0].content[7].value = self.config.get('d5');
+		uiconf.sections[0].content[8].value = self.config.get('d6');
+		uiconf.sections[0].content[9].value = self.config.get('d7');
+		uiconf.sections[0].content[10].value = self.config.get('i2caddress');
+		uiconf.sections[0].content[11].value = self.config.get('i2cport');
+		self.logger.info("1/2 PydPiper settings loaded");
 		
-		if(self.config.get('enabled') == false)
-			uiconf.sections.splice(0, 1);
+		for (var zone in zones)
+		{
+			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[0].options', {
+				value: zones[zone],
+				label: zones[zone]
+			});
+			
+			if(self.config.get('timezone') == zones[zone])
+			{
+				uiconf.sections[1].content[0].value.value = zones[zone];
+				uiconf.sections[1].content[0].value.label = zones[zone];
+			}
+		}
+		for (var n = 0; n < available_units.units.length; n++){
+			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[1].options', {
+				value: available_units.units[n].type,
+				label: available_units.units[n].name
+			});
+			
+			if(available_units.units[n].type == self.config.get('units'))
+			{
+				uiconf.sections[1].content[1].value.value = available_units.units[n].type;
+				uiconf.sections[1].content[1].value.label = available_units.units[n].name;
+			}
+		}
+		uiconf.sections[1].content[2].value = self.config.get('use_weather');
+		uiconf.sections[1].content[3].value = self.config.get('wapi');
+		uiconf.sections[1].content[4].value = self.config.get('wlocale');
+		for (var n = 0; n < available_mounts.points.length; n++){
+			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[5].options', {
+				value: available_mounts.points[n].point,
+				label: available_mounts.points[n].name
+			});
+			
+			if(available_mounts.points[n].type == self.config.get('mount_point'))
+			{
+				uiconf.sections[1].content[5].value.value = available_mounts.points[n].point;
+				uiconf.sections[1].content[5].value.label = available_mounts.points[n].name;
+			}
+		}
+		uiconf.sections[1].content[6].value = self.config.get('pages_file');
+		self.logger.info("2/2 PydPiper settings loaded");
+		
 		self.logger.info("Populated config screen.");
 		
 		defer.resolve(uiconf);
@@ -181,23 +251,24 @@ ControllerPydPiper.prototype.updateConnectionSettings = function (data)
 	var defer = libQ.defer();
 	
 	self.config.set('parallel', data['parallel']);
-	self.config.set('driver', data['driver']);
-	self.config.set('width', data['width']);
-	self.config.set('height', data['height']);
-	self.config.set('rs', data['rs']);
-	self.config.set('e', data['e']);
-	self.config.set('d4', data['d4']);
-	self.config.set('d5', data['d5']);
-	self.config.set('d6', data['d6']);
-	self.config.set('d7', data['d7']);
+	self.config.set('driver', data['driver'].value);
+	self.config.set('width', self.tryParse(data['width'], 80));
+	self.config.set('height', self.tryParse(data['height'], 16));
+	self.config.set('rs', self.tryParse(data['rs'], 0));
+	self.config.set('e', self.tryParse(data['e'], 0));
+	self.config.set('d4', self.tryParse(data['d4'], 0));
+	self.config.set('d5', self.tryParse(data['d5'], 0));
+	self.config.set('d6', self.tryParse(data['d6'], 0));
+	self.config.set('d7', self.tryParse(data['d7'], 0));
 	self.config.set('i2caddress', data['i2caddress']);
-	self.config.set('i2cport', data['i2cport']);
-	self.logger.info("Successfully updated connection settings");
+	self.config.set('i2cport', self.tryParse(data['i2cport'], 0));
+	self.commandRouter.pushToastMessage('success', "Successfully saved connection settings");
 
-	self.restartService("pydpiper", false)
-	.then(function(edefer)
+	self.updateUnitFile()	
+	.then(function(restart)
 	{
-		defer.resolve();
+		self.restartService("pydpiper", false);
+		defer.resolve(restart);
 	})
 	.fail(function()
 	{
@@ -213,18 +284,20 @@ ControllerPydPiper.prototype.updateOutputSettings = function (data)
 	var self = this;
 	var defer = libQ.defer();
 	
-	self.config.set('timezone', data['timezone']);
-	self.config.set('units', data['units']);
+	self.config.set('timezone', data['timezone'].value);
+	self.config.set('units', data['units'].value);
+	self.config.set('use_weather', data['use_weather']);
 	self.config.set('wapi', data['wapi']);
 	self.config.set('wlocale', data['wlocale']);
-	self.config.set('mount_point', data['mount_point']);
+	self.config.set('mount_point', data['mount_point'].value);
 	self.config.set('pages_file', data['pages_file']);
-	self.logger.info("Successfully updated connection settings");
+	self.commandRouter.pushToastMessage('success', "Successfully saved output settings");
 
-	self.restartService("pydpiper", false)
-	.then(function(edefer)
+	self.updateUnitFile()	
+	.then(function(restart)
 	{
-		defer.resolve();
+		self.restartService("pydpiper", false);
+		defer.resolve(restart);
 	})
 	.fail(function()
 	{
@@ -233,6 +306,18 @@ ControllerPydPiper.prototype.updateOutputSettings = function (data)
 	});
 	
 	return defer.promise;
+};
+
+ControllerPydPiper.prototype.tryParse = function(str,defaultValue) {
+     var retValue = defaultValue;
+     if(str !== null) {
+         if(str.length > 0) {
+             if (!isNaN(str)) {
+                 retValue = parseInt(str);
+             }
+         }
+     }
+     return retValue;
 };
 
 ControllerPydPiper.prototype.restartService = function (serviceName, boot)
@@ -291,17 +376,33 @@ ControllerPydPiper.prototype.stopService = function (serviceName)
 	return defer.promise;
 };
 
-ControllerPydPiper.prototype.replaceStringInFile = function (pattern, value, inFile)
+ControllerPydPiper.prototype.updateUnitFile = function ()
 {
 	var self = this;
 	var defer = libQ.defer();
-	var castValue;
-	
-	if(value == true || value == false)
-			castValue = ~~value;
+		
+	var template = "ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw";
+	if(self.config.get('mount_point') == 'local')
+		template += " -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio";
 	else
-		castValue = value;
-
+		template += " dhrone/pydpiper:latest python /app/pydPiper.py --volumio";
+	
+	template += " --driver " + self.config.get('driver') + " --width " + self.config.get('width') + " --height " + self.config.get('height');
+	
+	if(self.config.get('parallel'))
+		template += " --rs " + self.config.get('rs') + " --e " + self.config.get('e') + " --d4 " + self.config.get('d4') + " --d5 " + self.config.get('d5') + " --d6 " + self.config.get('d6') + " --d7 " + self.config.get('d7');
+	else
+		template +=  " --i2caddress " + self.config.get('i2caddress') + " --i2cport " + self.config.get('i2cport');
+	
+	if(self.config.get('use_weather'))
+		template += " --wapi " + self.config.get('wapi') + " --wlocale " + self.config.get('wlocale') + " --temperature " + self.config.get('units');
+	
+	template += " --pages " + self.config.get('pages_file');
+	
+	self.logger.info("TEMPLATE: " + template);
+	
+	/*
+	var execCmd = "ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw   -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --rs 7 --e 8 --d4 25 --d5 24 --d6 23 --d7 27 --timezone 'Europe/Amsterdam' --temperature celsius --wapi --wlocale 'Netherlands/Woudenberg' --pages pages_weh_80x16_volumio.py";
 	var command = "/bin/echo volumio | /usr/bin/sudo -S /bin/sed -i -- 's|" + pattern + ".*|" + castValue + "|g' " + inFile;
 
 	exec(command, {uid:1000, gid:1000}, function (error, stout, stderr) {
@@ -310,37 +411,8 @@ ControllerPydPiper.prototype.replaceStringInFile = function (pattern, value, inF
 
 		defer.resolve();
 	});
+	*/
+	defer.resolve();
 	
 	return defer.promise;
-};
-
-ControllerPydPiper.prototype.getCurrentIP = function () {
-    var self = this;
-    var defer = libQ.defer();
-	var ipaddr = '';
-	
-    ifconfig.status('wlan0', function(err, status) 
-	{
-        if (status != undefined)
-		{
-			// Omit the hotspot address
-            if (status.ipv4_address != undefined && status.ipv4_address != '192.168.211.1')
-			{
-                currentIp = status.ipv4_address;
-                defer.resolve(ipaddr);
-            } 
-			else 
-			{
-                currentIp = ip.address();
-                defer.resolve(ipaddr);
-            }
-        }
-		else
-		{
-			// Try again, but now only ethernet
-			currentIp = ip.address();
-			defer.resolve(ipaddr);
-		}
-    });
-    return defer.promise;
 };
