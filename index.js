@@ -200,7 +200,7 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 				label: available_mounts.points[n].name
 			});
 			
-			if(available_mounts.points[n].type == self.config.get('mount_point'))
+			if(available_mounts.points[n].point == self.config.get('mount_point'))
 			{
 				uiconf.sections[1].content[5].value.value = available_mounts.points[n].point;
 				uiconf.sections[1].content[5].value.label = available_mounts.points[n].name;
@@ -415,6 +415,8 @@ ControllerPydPiper.prototype.updateUnitFile = function ()
 		template += " --rs " + self.config.get('rs') + " --e " + self.config.get('e') + " --d4 " + self.config.get('d4') + " --d5 " + self.config.get('d5') + " --d6 " + self.config.get('d6') + " --d7 " + self.config.get('d7');
 	else
 		template +=  " --i2caddress " + self.config.get('i2caddress') + " --i2cport " + self.config.get('i2cport');
+	
+	template += " --timezone " + self.config.get('timezone');
 	
 	if(self.config.get('use_weather'))
 		template += " --wapi " + self.config.get('wapi') + " --wlocale " + self.config.get('wlocale') + " --temperature " + self.config.get('units');
