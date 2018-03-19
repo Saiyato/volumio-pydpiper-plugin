@@ -1,0 +1,264 @@
+{
+	"page": {
+		"label": "TRANSLATE.PYDPIPER.PYDPIPERCONF"
+	},
+	"sections": [
+		{
+			"id": "section_driver",
+			"element": "section",
+			"label": "TRANSLATE.PYDPIPER.DRIVERSETTINGS",
+			"description": "TRANSLATE.PYDPIPER.D_DRIVERSETTINGS",
+			"icon": "fa-windows-cogs",
+			"onSave": {
+				"type": "controller",
+				"endpoint": "accessory/pydpiper",
+				"method": "updateConnectionSettings"
+			},
+			"saveButton": {
+				"label": "TRANSLATE.PYDPIPER.SAVE",
+				"data": [
+					"serial",
+					"driver",
+					"width",
+					"height",
+					"rs",
+					"e",
+					"d4",
+					"d5",
+					"d6",
+					"d7",
+					"i2caddress",
+					"i2cport"
+				]
+			},
+			"content": 
+			[{
+				"id": "serial",
+				"element": "switch",				
+				"label": "TRANSLATE.PYDPIPER.SERIAL",
+				"doc": "TRANSLATE.PYDPIPER.D_SERIAL",
+				"value": true
+			},
+			{
+				"id": "driver",
+				"element": "select",				
+				"label": "TRANSLATE.PYDPIPER.DRIVER",
+				"doc": "TRANSLATE.PYDPIPER.D_DRIVER",
+				"value": {
+					"value": "hd44780",
+					"label": "Serial connection"
+				},
+				"options": [],
+			},			
+			{
+				"id": "width",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.WIDTH",
+				"doc": "TRANSLATE.PYDPIPER.D_WIDTH",
+				"description": "TRANSLATE.PYDPIPER.DD_WIDTH",
+				"value": 80
+			},
+			{
+				"id": "height",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.HEIGHT",
+				"doc": "TRANSLATE.PYDPIPER.D_HEIGHT",
+				"description": "TRANSLATE.PYDPIPER.DD_HEIGHT",
+				"value": 16
+			},
+			{
+				"id": "rs",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.RS",
+				"doc": "TRANSLATE.PYDPIPER.D_RS",
+				"description": "TRANSLATE.PYDPIPER.DD_RS",
+				"value": 7,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "e",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.E",
+				"doc": "TRANSLATE.PYDPIPER.D_E",
+				"description": "TRANSLATE.PYDPIPER.DD_E",
+				"value": 8,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "d4",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.D4",
+				"doc": "TRANSLATE.PYDPIPER.D_D4",
+				"description": "TRANSLATE.PYDPIPER.DD_D4",
+				"value": 25,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "d5",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.D5",
+				"doc": "TRANSLATE.PYDPIPER.D_D5",
+				"description": "TRANSLATE.PYDPIPER.DD_D5",
+				"value": 24,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "d6",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.D6",
+				"doc": "TRANSLATE.PYDPIPER.D_D6",
+				"description": "TRANSLATE.PYDPIPER.DD_D6",
+				"value": 23,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "d7",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.D7",
+				"doc": "TRANSLATE.PYDPIPER.D_D7",
+				"description": "TRANSLATE.PYDPIPER.DD_D7",
+				"value": 27,
+				"visibleIf": {
+					"field": "serial",
+					"value": true
+				}
+			},
+			{
+				"id": "i2caddress",
+				"element": "input",
+				"type": "text",
+				"label": "TRANSLATE.PYDPIPER.D7",
+				"doc": "TRANSLATE.PYDPIPER.D_D7",
+				"description": "TRANSLATE.PYDPIPER.DD_D7",
+				"value": "0x27",
+				"visibleIf": {
+					"field": "serial",
+					"value": false
+				}
+			},
+			{
+				"id": "i2cport",
+				"element": "input",
+				"type": "int",
+				"label": "TRANSLATE.PYDPIPER.I2CPORT",
+				"doc": "TRANSLATE.PYDPIPER.D_I2CPORT",
+				"value": 1,
+				"visibleIf": {
+					"field": "serial",
+					"value": false
+				}
+			}]			
+		},
+		{
+		"id": "section_pages",
+		"element": "section",
+		"label": "TRANSLATE.PYDPIPER.PAGES",
+		"description": "TRANSLATE.PYDPIPER.D_PAGES",
+		"icon": "fa-server",
+		"onSave": {
+			"type": "controller",
+			"endpoint": "accessory/pydpiper",
+			"method": "updatePageSettings"
+		},
+		"saveButton": {
+			"label": "TRANSLATE.PYDPIPER.SAVE",
+			"data": [
+				"enabled"
+			]
+		},
+		"content": 
+			[{
+				"id": "timezone",
+				"element": "select",				
+				"label": "TRANSLATE.PYDPIPER.TIMEZONE",
+				"doc": "TRANSLATE.PYDPIPER.D_TIMEZONE",
+				"value": {
+					"value": "Europe/Amsterdam",
+					"label": "Europe/Amsterdam"
+				},
+				"options": [],
+			},
+			{
+				"id": "units",
+				"element": "select",				
+				"label": "TRANSLATE.PYDPIPER.UNITS",
+				"doc": "TRANSLATE.PYDPIPER.D_UNITS",
+				"value": {
+					"label": "Celsius",
+					"value": "celsius"					
+				},
+				"options": [
+					{
+						"label": "Celsius",
+						"value": "celsius"
+					},
+					{
+						"label": "Fahrenheit",
+						"value": "fahrenheit"
+					}
+				],
+			},
+			{
+				"id": "use_weather",
+				"element": "switch",				
+				"label": "TRANSLATE.PYDPIPER.USE_WEATHER",
+				"doc": "TRANSLATE.PYDPIPER.D_USE_WEATHER",
+				"value": true
+			},
+			{
+				"id": "wapi",
+				"element": "input",
+				"type": "text",
+				"label": "TRANSLATE.PYDPIPER.WAPI",
+				"doc": "TRANSLATE.PYDPIPER.D_WAPI",
+				"value": "",
+				"visibleIf": {
+					"field": "use_weather",
+					"value": true
+				}
+			},
+			{
+				"id": "wlocale",
+				"element": "input",
+				"type": "text",
+				"label": "TRANSLATE.PYDPIPER.WLOCALE",
+				"doc": "TRANSLATE.PYDPIPER.D_WLOCALE",
+				"value": "",
+				"visibleIf": {
+					"field": "use_weather",
+					"value": true
+				}
+			},
+			{
+				"id": "pages_file",
+				"element": "input",
+				"type": "text",
+				"label": "TRANSLATE.PYDPIPER.PAGES_FILE",
+				"doc": "TRANSLATE.PYDPIPER.D_PAGES_FILE",
+				"value": ""
+			}]
+		}]
+}
