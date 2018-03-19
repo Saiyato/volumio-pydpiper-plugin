@@ -53,7 +53,7 @@
 			{
 				"id": "width",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.WIDTH",
 				"doc": "TRANSLATE.PYDPIPER.D_WIDTH",
 				"description": "TRANSLATE.PYDPIPER.DD_WIDTH",
@@ -62,7 +62,7 @@
 			{
 				"id": "height",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.HEIGHT",
 				"doc": "TRANSLATE.PYDPIPER.D_HEIGHT",
 				"description": "TRANSLATE.PYDPIPER.DD_HEIGHT",
@@ -71,7 +71,7 @@
 			{
 				"id": "rs",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.RS",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_RS",
@@ -84,7 +84,7 @@
 			{
 				"id": "e",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.E",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_E",
@@ -97,7 +97,7 @@
 			{
 				"id": "d4",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.D4",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_D4",
@@ -110,7 +110,7 @@
 			{
 				"id": "d5",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.D5",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_D5",
@@ -123,7 +123,7 @@
 			{
 				"id": "d6",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.D6",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_D6",
@@ -136,7 +136,7 @@
 			{
 				"id": "d7",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.D7",
 				"doc": "TRANSLATE.PYDPIPER.GPIO_PIN",
 				"description": "TRANSLATE.PYDPIPER.DD_D7",
@@ -162,7 +162,7 @@
 			{
 				"id": "i2cport",
 				"element": "input",
-				"type": "int",
+				"type": "text",
 				"label": "TRANSLATE.PYDPIPER.I2CPORT",
 				"doc": "TRANSLATE.PYDPIPER.D_I2CPORT",
 				"value": 1,

@@ -310,6 +310,7 @@ ControllerPydPiper.prototype.updateOutputSettings = function (data)
 
 ControllerPydPiper.prototype.tryParse = function(str,defaultValue) {
      var retValue = defaultValue;
+	 str = str.toString();
      if(str !== null) {
          if(str.length > 0) {
              if (!isNaN(str)) {
