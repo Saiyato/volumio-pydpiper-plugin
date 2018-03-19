@@ -264,7 +264,12 @@ ControllerPydPiper.prototype.updateConnectionSettings = function (data)
 	self.config.set('i2cport', self.tryParse(data['i2cport'], 0));
 	self.commandRouter.pushToastMessage('success', "Successfully saved connection settings");
 
-	self.updateUnitFile()	
+	self.updateUnitFile()
+	.then(function(reload)
+	{
+		self.reloadServices();
+		defer.resolve(reload);
+	})
 	.then(function(restart)
 	{
 		self.restartService("pydpiper", false);
@@ -294,6 +299,11 @@ ControllerPydPiper.prototype.updateOutputSettings = function (data)
 	self.commandRouter.pushToastMessage('success', "Successfully saved output settings");
 
 	self.updateUnitFile()	
+	.then(function(reload)
+	{
+		self.reloadServices();
+		defer.resolve(reload);
+	})
 	.then(function(restart)
 	{
 		self.restartService("pydpiper", false);
@@ -321,35 +331,46 @@ ControllerPydPiper.prototype.tryParse = function(str,defaultValue) {
      return retValue;
 };
 
+ControllerPydPiper.prototype.reloadServices = function ()
+{
+	var self = this;
+	var defer=libQ.defer();
+
+	var command = "/usr/bin/sudo /bin/systemctl daemon-reload";
+	
+	exec(command, {uid:1000,gid:1000}, function (error, stdout, stderr) {
+		if (error !== null) {
+			defer.reject();
+		}
+		else {
+			defer.resolve();
+		}
+	});
+
+	return defer.promise;
+};
+
 ControllerPydPiper.prototype.restartService = function (serviceName, boot)
 {
 	var self = this;
 	var defer=libQ.defer();
 
-	if(self.config.get('enabled'))
-	{
-		var command = "/usr/bin/sudo /bin/systemctl restart " + serviceName;
-		
-		exec(command, {uid:1000,gid:1000}, function (error, stdout, stderr) {
-			if (error !== null) {
-				self.commandRouter.pushConsoleMessage('The following error occurred while starting ' + serviceName + ': ' + error);
-				self.commandRouter.pushToastMessage('error', "Restart failed", "Restarting " + serviceName + " failed with error: " + error);
-				defer.reject();
-			}
-			else {
-				self.commandRouter.pushConsoleMessage(serviceName + ' started');
-				if(boot == false)
-					self.commandRouter.pushToastMessage('success', "Restarted " + serviceName, "Restarted " + serviceName + " for the changes to take effect.");
-				
-				defer.resolve();
-			}
-		});
-	}
-	else
-	{
-		self.logger.info("Not starting " + serviceName + "; it's not enabled.");
-		defer.resolve();
-	}
+	var command = "/usr/bin/sudo /bin/systemctl restart " + serviceName;
+	
+	exec(command, {uid:1000,gid:1000}, function (error, stdout, stderr) {
+		if (error !== null) {
+			self.commandRouter.pushConsoleMessage('The following error occurred while starting ' + serviceName + ': ' + error);
+			self.commandRouter.pushToastMessage('error', "Restart failed", "Restarting " + serviceName + " failed with error: " + error);
+			defer.reject();
+		}
+		else {
+			self.commandRouter.pushConsoleMessage(serviceName + ' started');
+			if(boot == false)
+				self.commandRouter.pushToastMessage('success', "Restarted " + serviceName, "Restarted " + serviceName + " for the changes to take effect.");
+			
+			defer.resolve();
+		}
+	});
 
 	return defer.promise;
 };
@@ -400,20 +421,13 @@ ControllerPydPiper.prototype.updateUnitFile = function ()
 	
 	template += " --pages " + self.config.get('pages_file');
 	
-	self.logger.info("TEMPLATE: " + template);
-	
-	/*
-	var execCmd = "ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw   -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --rs 7 --e 8 --d4 25 --d5 24 --d6 23 --d7 27 --timezone 'Europe/Amsterdam' --temperature celsius --wapi --wlocale 'Netherlands/Woudenberg' --pages pages_weh_80x16_volumio.py";
-	var command = "/bin/echo volumio | /usr/bin/sudo -S /bin/sed -i -- 's|" + pattern + ".*|" + castValue + "|g' " + inFile;
-
+	var command = "/bin/echo volumio | /usr/bin/sudo -S /bin/sed -i -- 's|ExecStart.*|" + template + "|g' /etc/systemd/system/pydpiper.service";
 	exec(command, {uid:1000, gid:1000}, function (error, stout, stderr) {
 		if(error)
 			console.log(stderr);
 
 		defer.resolve();
 	});
-	*/
-	defer.resolve();
 	
 	return defer.promise;
 };

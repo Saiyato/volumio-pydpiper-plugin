@@ -73,6 +73,6 @@
   },
   "pages_file": {
     "type": "text",
-    "value": "pages_weh_80x16_volumio.py"
+    "value": "pages_weh_80x16.py"
   }
 }
