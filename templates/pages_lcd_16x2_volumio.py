@@ -51,7 +51,7 @@ WIDGETS = {
 CANVASES = {
 	'playartist': { 'widgets': [ ('artist',0,8), ('nowplaying',0,0), ('nowplayingdata',40,0), ('songprogress',65,8) ], 'size':(80,16) },
 	'playalbum': { 'widgets': [ ('album',0,8), ('nowplaying',0,0), ('nowplayingdata',40,0), ('songprogress_small',65,8) ], 'size':(80,16) },
-	'volumio_info': { 'widgets': [ ('songprogress',0,13) ], 'size':(80,16) },
+	'volumio_info': { 'widgets': [ ('songprogress_small',0,13) ], 'size':(80,16) },
 	'playtitle': { 'widgets':  [ ('title',0,8), ('nowplaying',0,0), ('nowplayingdata',40,0), ('songprogress',65,8) ], 'size':(80,16) },
 	'playartist_radio': { 'widgets': [ ('artist',0,8), ('nowplaying',0,0), ('radio',40,0), ('songprogress',65,8) ], 'size':(80,16) },
 	'playalbum_radio': { 'widgets':  [ ('album',0,8), ('nowplaying',0,0), ('radio',40,0), ('songprogress',65,8) ], 'size':(80,16) },
