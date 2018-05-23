@@ -89,8 +89,8 @@ ControllerPydPiper.prototype.onStart = function() {
 	})
 	.fail(function(e)
 	{
-		self.commandRouter.pushToastMessage('error', "Startup failed", "Could not start the LMS plugin in a fashionable manner.");
-		self.logger.info("Could not start the LMS plugin in a fashionable manner.");
+		self.commandRouter.pushToastMessage('error', "Startup failed", "Could not start the pydPiper plugin in a fashionable manner.");
+		self.logger.info("Could not start the pydPiper plugin in a fashionable manner.");
 		defer.reject(new error());
 	});
 
