@@ -23,7 +23,7 @@ WIDGETS = {
 	'splash': { 'type':'text', 'format':'pydPiper\nStarting...', 'font':'small' },
 	'nowplaying': { 'type':'text', 'format':'{0}', 'variables':['actPlayer|upper'], 'font':'small', 'varwidth':True},
 	'nowplayingdata': { 'type':'text', 'format':'{0} OF {1}', 'variables':['playlist_position', 'playlist_length'], 'font':'small', 'just':'right','size':(40,8),'varwidth':True},
-	'filetype': { 'type':'text', 'format':'{0}', 'variables':['stream|upper'], 'font':'tiny', 'varwidth':True},
+	'filetype': { 'type':'text', 'format':'{0}', 'variables':['tracktype|upper'], 'font':'tiny', 'varwidth':True},
 	'fixed_stream': { 'type':'text', 'format':'STRM', 'variables':[], 'font':'tiny', 'varwidth':True},
 	'stream': { 'type':'text', 'format':'{0}', 'variables':['actPlayer'], 'font':'small', 'just':'center', 'varwidth':True},
 	'service_info': { 'type':'text', 'format':'SERVICE: {0}', 'variables':['actPlayer|upper'], 'font':'tiny', 'varwidth':True, 'effect':('scroll','left',5,5,10,'onloop',3,80) },
@@ -70,7 +70,8 @@ CANVASES = {
 	'showrepeatonce': { 'widgets': [ ('repeatoncesymbol',0,0), ('repeatonce', 15,0) ], 'size':(80,16) },
 	'showrepeatall': { 'widgets': [ ('repeatallsymbol',0,0), ('repeatall', 15,0) ], 'size':(80,16) },
 	'blank': { 'widgets': [], 'size':(80,16) },
-	'stoptime': { 'widgets': [ ('time',0,0), ('time24',70,0) ], 'size':(80,16) },
+	'stoptime': { 'widgets': [ ('time',0,0), ('ampm',70,0) ], 'size':(80,16) },
+	'stoptime24': { 'widgets': [ ('time24',0,0) ], 'size':(80,16) },
 	'weather': { 'widgets': [ ('temp',0,0), ('conditions',0,8), ('temphilow', 55,0) ], 'size':(80,16) },
 	'volume_changed': { 'widgets': [ ('volume',5,0), ('volumebar',0,8) ], 'size':(80,16) },
 }
@@ -102,7 +103,7 @@ SEQUENCES = [
 	{
 		'name': 'seqStop',
 		'canvases': [
-			{ 'name':'stoptime', 'duration':15 },
+			{ 'name':'stoptime24', 'duration':15 },
 			{ 'name':'weather', 'duration':10, 'conditional':"not db['outside_conditions']=='No data'" }
 		],
 		'conditional': "db['state']=='stop' or db['state']=='pause'"

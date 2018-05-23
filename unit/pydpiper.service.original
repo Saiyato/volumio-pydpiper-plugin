@@ -44,7 +44,7 @@ Restart=always
 # <pagefile> -- The name of the pages file to use for your display
 
 #ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --rs 7 --e 8 --d4 25 --d5 24 --d6 23 --d7 27 --timezone 'Europe/Amsterdam' --temperature celsius --pages pages_weh_80x16.py
-ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --rs 7 --e 8 --d4 25 --d5 24 --d6 23 --d7 27 --timezone 'Europe/Amsterdam' --temperature celsius --pages pages_weh_80x16_volumio.py
+ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver winstar_weg --width 80 --height 16 --rs 7 --e 8 --d4 25 --d5 24 --d6 23 --d7 27 --timezone Europe/Amsterdam --temperature celsius --pages pages_weh_80x16_volumio.py
 #ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio --driver hd44780_i2c --width 80 --height 16 --i2caddress 0x3F --i2cport 1 --timezone Europe/Amsterdam --pages pages_lcd_16x2_volumio.py
 
 ExecStop=/usr/bin/docker stop -t 2 dhrone/pydpiper:latest

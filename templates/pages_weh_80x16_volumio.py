@@ -24,7 +24,7 @@ IMAGES = {
 WIDGETS = {
 	'splash': { 'type':'image', 'image':'splash' },
 	'nowplaying': { 'type':'text', 'format':'{0}', 'variables':['actPlayer|upper'], 'font':'tiny', 'just':'center', 'varwidth':True},
-	'filetype': { 'type':'text', 'format':'{0}', 'variables':['stream|upper'], 'font':'tiny', 'varwidth':True},
+	'filetype': { 'type':'text', 'format':'{0}', 'variables':['tracktype|upper'], 'font':'tiny', 'varwidth':True},
 	'fixed_stream': { 'type':'text', 'format':'STRM', 'variables':[], 'font':'tiny', 'varwidth':True},
 	'stream': { 'type':'text', 'format':'{0}', 'variables':['actPlayer'], 'font':'small', 'just':'center', 'varwidth':True},
 	'service_info': { 'type':'text', 'format':'SERVICE: {0}', 'variables':['actPlayer|upper'], 'font':'tiny', 'varwidth':True, 'effect':('scroll','left',5,5,20,'onloop',3,80) },
