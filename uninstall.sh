@@ -1,6 +1,6 @@
-## LMS uninstallation script
-echo "Uninstalling LMS and its dependencies..."
-INSTALLING="/home/volumio/lms-plugin.uninstalling"
+## pydPiper uninstallation script
+echo "Uninstalling pydPiper and its dependencies..."
+INSTALLING="/home/volumio/pydpiper-plugin.uninstalling"
 
 if [ ! -f $INSTALLING ]; then
 
