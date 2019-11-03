@@ -17,14 +17,14 @@ if [ ! -f $INSTALLING ]; then
 	cd /home/volumio/pydPiper
 	sh ./install.sh
 
-	# Fetch custom scripts
-	wget -O /home/volumio/pydPiper/pages_lcd_16x2_volumio.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_lcd_16x2_volumio.py
-	wget -O /home/volumio/pydPiper/pages_raspdac_16x2.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_raspdac_16x2.py
-	wget -O /home/volumio/pydPiper/pages_weh_80x16_volumio.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pages_weh_80x16_volumio.py
-	wget -O /home/volumio/pydPiper/pydPiper.py https://raw.githubusercontent.com/Saiyato/volumio-pydpiper-plugin/master/templates/pydPiper.py
+	# Copy custom scripts from the plugin to the mount-point
+	cp -f /data/plugins/accessory/pydpiper/templates/pages_lcd_16x2_volumio.py /home/volumio/pydPiper/pages_lcd_16x2_volumio.py
+	cp -f /data/plugins/accessory/pydpiper/templates/pages_raspdac_16x2.py /home/volumio/pydPiper/pages_raspdac_16x2.py
+	cp -f /data/plugins/accessory/pydpiper/templates/pages_weh_80x16_volumio.py /home/volumio/pydPiper/pages_weh_80x16_volumio.py
+	cp -f /data/plugins/accessory/pydpiper/templates/pydPiper.py /home/volumio/pydPiper/pydPiper.py
 	
-	# Delete, link, reload and disable auto-start for the service
-	rm /etc/systemd/system/pydpiper.service
+	# Delete, link and reload the pydpiper service
+	systemctl disable pydpiper.service
 	ln -fs /data/plugins/accessory/pydpiper/unit/pydpiper.service /etc/systemd/system/pydpiper.service
 	systemctl daemon-reload
 
