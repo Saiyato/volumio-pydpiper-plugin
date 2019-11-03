@@ -214,7 +214,7 @@ class music_controller(threading.Thread):
 				if self.musicdata[u'elapsed'] != self.musicdata_prev[u'elapsed']:
 					timepos = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'elapsed']))
 					timepos_advanced = timepos
-					total_time = 0
+					total_time = "00:00"
 					if self.musicdata[u'length'] > 0:						
 						timepos_advanced = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'elapsed'])) + "/" + time.strftime("%-M:%S", time.gmtime(self.musicdata[u'length']))
 						remaining = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'length'] - self.musicdata[u'elapsed']))
