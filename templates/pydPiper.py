@@ -213,16 +213,16 @@ class music_controller(threading.Thread):
 				# If the value of current has changed then update the other related timing variables
 				if self.musicdata[u'elapsed'] != self.musicdata_prev[u'elapsed']:
 					timepos = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'elapsed']))
+					timepos_advanced = timepos
 					if self.musicdata[u'length'] > 0:						
 						timepos_advanced = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'elapsed'])) + "/" + time.strftime("%-M:%S", time.gmtime(self.musicdata[u'length']))
 						remaining = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'length'] - self.musicdata[u'elapsed']))
 						total_time = time.strftime("%-M:%S", time.gmtime(self.musicdata[u'length']))
-
 					else:						
 						remaining = timepos
 
-					self.musicdata[u'remaining'] = remaining.decode()
 					self.musicdata[u'elapsed_formatted'] = timepos_advanced.decode()
+					self.musicdata[u'remaining'] = remaining.decode()
 					self.musicdata[u'elapsed_simple'] = self.musicdata[u'position'] = timepos.decode()
 					self.musicdata[u'total_time'] = total_time.decode()
 
