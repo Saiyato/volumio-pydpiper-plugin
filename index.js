@@ -403,7 +403,7 @@ ControllerPydPiper.prototype.updateUnitFile = function ()
 	var self = this;
 	var defer = libQ.defer();
 		
-	var template = "ExecStart=/usr/bin/docker run --network=host --privileged -v /var/log:/var/log:rw";
+	var template = "ExecStart=/usr/bin/docker run --rm --network=host --privileged -v /var/log:/var/log:rw";
 	if(self.config.get('mount_point') == 'local')
 		template += " -v /home/volumio/pydPiper:/app:ro dhrone/pydpiper:latest python /app/pydPiper.py --volumio";
 	else
