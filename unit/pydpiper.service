@@ -1,7 +1,7 @@
 [Unit]
 Description=pydPiper container
 Requires=docker.service
-After=volumio.service
+#After=volumio.service
 
 [Service]
 Restart=always
