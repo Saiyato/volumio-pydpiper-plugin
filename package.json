@@ -1,6 +1,6 @@
 {
   "name": "pydpiper",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Installs pydPiper binaries to use with several displays.",
   "main": "index.js",
   "scripts": {
