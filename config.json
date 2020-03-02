@@ -17,11 +17,11 @@
   },
   "rs": {
     "type": "int",
-    "value": 8
+    "value": 7
   },
   "e": {
     "type": "int",
-    "value": 7
+    "value": 8
   },
   "d4": {
     "type": "int",
