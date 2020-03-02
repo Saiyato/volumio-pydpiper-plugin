@@ -127,6 +127,7 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 	
 	// Populate drop down boxes	
 	var available_drivers = fs.readJsonSync((__dirname + '/options/drivers.json'),  'utf8', {throws: false});
+	var available_formats = fs.readJsonSync((__dirname + '/options/timeformats.json'),  'utf8', {throws: false});
 	var available_units = fs.readJsonSync((__dirname + '/options/units.json'),  'utf8', {throws: false});
 	var available_mounts = fs.readJsonSync((__dirname + '/options/mount_points.json'),  'utf8', {throws: false});
 	var zones = moment.tz.names();	
@@ -179,21 +180,33 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 				uiconf.sections[1].content[0].value.label = zones[zone];
 			}
 		}
-		for (var n = 0; n < available_units.units.length; n++){
+		for (var n = 0; n < available_formats.formats.length; n++){
 			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[1].options', {
+				value: available_formats.formats[n].format,
+				label: available_formats.formats[n].name
+			});
+			
+			if(available_formats.formats[n].format == self.config.get('timeformat'))
+			{
+				uiconf.sections[1].content[1].value.value = available_formats.formats[n].format;
+				uiconf.sections[1].content[1].value.label = available_formats.formats[n].name;
+			}
+		}
+		for (var n = 0; n < available_units.units.length; n++){
+			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[2].options', {
 				value: available_units.units[n].type,
 				label: available_units.units[n].name
 			});
 			
 			if(available_units.units[n].type == self.config.get('units'))
 			{
-				uiconf.sections[1].content[1].value.value = available_units.units[n].type;
-				uiconf.sections[1].content[1].value.label = available_units.units[n].name;
+				uiconf.sections[1].content[2].value.value = available_units.units[n].type;
+				uiconf.sections[1].content[2].value.label = available_units.units[n].name;
 			}
 		}
-		uiconf.sections[1].content[2].value = self.config.get('use_weather');
-		uiconf.sections[1].content[3].value = self.config.get('wapi');
-		uiconf.sections[1].content[4].value = self.config.get('wlocale');
+		uiconf.sections[1].content[3].value = self.config.get('use_weather');
+		uiconf.sections[1].content[4].value = self.config.get('wapi');
+		uiconf.sections[1].content[5].value = self.config.get('wlocale');
 		for (var n = 0; n < available_mounts.points.length; n++){
 			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[5].options', {
 				value: available_mounts.points[n].point,
@@ -202,11 +215,11 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 			
 			if(available_mounts.points[n].point == self.config.get('mount_point'))
 			{
-				uiconf.sections[1].content[5].value.value = available_mounts.points[n].point;
-				uiconf.sections[1].content[5].value.label = available_mounts.points[n].name;
+				uiconf.sections[1].content[6].value.value = available_mounts.points[n].point;
+				uiconf.sections[1].content[6].value.label = available_mounts.points[n].name;
 			}
 		}
-		uiconf.sections[1].content[6].value = self.config.get('pages_file');
+		uiconf.sections[1].content[7].value = self.config.get('pages_file');
 		self.logger.info("2/2 PydPiper settings loaded");
 		
 		self.logger.info("Populated config screen.");
@@ -290,6 +303,7 @@ ControllerPydPiper.prototype.updateOutputSettings = function (data)
 	var defer = libQ.defer();
 	
 	self.config.set('timezone', data['timezone'].value);
+	self.config.set('timeformat', data['timeformat'].value);
 	self.config.set('units', data['units'].value);
 	self.config.set('use_weather', data['use_weather']);
 	self.config.set('wapi', data['wapi']);
@@ -420,6 +434,9 @@ ControllerPydPiper.prototype.updateUnitFile = function ()
 	
 	if(self.config.get('use_weather'))
 		template += " --wapi " + self.config.get('wapi') + " --wlocale '\\''" + self.config.get('wlocale') + "'\\'' --temperature " + self.config.get('units');
+	
+	if(self.config.get('timeformat') == "24H")
+		template += " --time24hour"
 	
 	template += " --pages " + self.config.get('pages_file');
 	

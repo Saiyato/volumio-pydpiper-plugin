@@ -51,6 +51,10 @@
     "type": "text",
     "value": "Europe/Amsterdam"
   },
+  "timeformat": {
+    "type": "text",
+    "value": "24H"
+  },
   "units": {
     "type": "text",
     "value": "celsius"

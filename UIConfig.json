@@ -187,6 +187,7 @@
 			"label": "TRANSLATE.PYDPIPER.SAVE",
 			"data": [
 				"timezone",
+				"timeformat",
 				"units",
 				"use_weather",
 				"wapi",
@@ -204,6 +205,17 @@
 				"value": {
 					"value": "Europe/Amsterdam",
 					"label": "Europe/Amsterdam"
+				},
+				"options": []
+			},
+			{
+				"id": "timeformat",
+				"element": "select",				
+				"label": "TRANSLATE.PYDPIPER.TIMEFORMAT",
+				"doc": "TRANSLATE.PYDPIPER.D_TIMEFORMAT",
+				"value": {
+					"value": "24H",
+					"label": "24H"
 				},
 				"options": []
 			},
