@@ -213,6 +213,7 @@
 				"element": "select",				
 				"label": "TRANSLATE.PYDPIPER.TIMEFORMAT",
 				"doc": "TRANSLATE.PYDPIPER.D_TIMEFORMAT",
+				"description": "TRANSLATE.PYDPIPER.DD_TIMEFORMAT",
 				"value": {
 					"value": "24H",
 					"label": "24H"

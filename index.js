@@ -208,7 +208,7 @@ ControllerPydPiper.prototype.getUIConfig = function() {
 		uiconf.sections[1].content[4].value = self.config.get('wapi');
 		uiconf.sections[1].content[5].value = self.config.get('wlocale');
 		for (var n = 0; n < available_mounts.points.length; n++){
-			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[5].options', {
+			self.configManager.pushUIConfigParam(uiconf, 'sections[1].content[6].options', {
 				value: available_mounts.points[n].point,
 				label: available_mounts.points[n].name
 			});
